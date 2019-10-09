@@ -9,6 +9,7 @@ set cpo&vim
 augroup vim-go-openimport
   autocmd!
   autocmd FileType go command! GoOpenImport call openimport#open()
+  autocmd FileType go nnoremap <Space>gf :GoOpenImport<Enter>
 augroup END
 
 let &cpo = s:save_cpo
