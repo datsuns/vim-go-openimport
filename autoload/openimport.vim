@@ -3,7 +3,7 @@ let s:g_openimport_go_root_path = ""
 function! openimport#open_if_found(path) abort
   if isdirectory(a:path)
     execute ":tabnew"
-    execute ":open " . a:path
+    execute ":e " . a:path
     return v:true
   endif
   return v:false
@@ -19,8 +19,9 @@ function! openimport#open_by_env(pkg) abort
   endif
   let logs = split(system("go env"), "\n")
   for line in logs
-    if match(line, "^set GOROOT=.*") != -1
-      let s:g_openimport_go_root_path = split(line, "=")[1]
+    if match(line, "^.*GOROOT=.*") != -1
+      let org = split(line, "=")[1]
+      let s:g_openimport_go_root_path = substitute(org, "\"", "", 'g')
       return openimport#open_if_found(s:g_openimport_go_root_path . "/src/" . a:pkg)
     endif
   endfor
